@@ -1,0 +1,85 @@
+{
+  "Global": {
+    "By Product / Device Type": {
+      "Drug-Device Combination Products": {
+        "Inhalers & nebulizers": {},
+        "Insulin pumps & auto-injectors": {},
+        "Pre-filled syringes & pen injectors": {},
+        "Sterile injectables": {},
+        "Topical/Transdermal patches": {},
+        "Others (Microelectronic delivery devices & Others)": {}
+      },
+      "Medical Devices": {
+        "Surgical instruments": {},
+        "Orthopedic implants & prosthetics": {},
+        "Dental devices": {},
+        "Others (Cardiovascular devices)": {}
+      },
+      "Diagnostics & Laboratory": {
+        "Devices/Equipment": {
+          "Imaging devices (MRI, CT components, ultrasound systems)": {},
+          "In-vitro diagnostic (IVD) kits": {},
+          "Point-of-care diagnostic devices": {},
+          "Molecular diagnostics devices (PCR, NGS systems)": {},
+          "Others (Point-of-care devices & Others)": {}
+        },
+        "Others (Monitoring & Digital Health Devices)": {}
+      }
+    },
+    "By Service Type": {
+      "Design & Development & Engineering Services": {},
+      "Contract manufacturing": {},
+      "Supply Chain Management": {},
+      "Quality & Regulations": {},
+      "Digital & Data Services": {},
+      "Other Value-Added Services": {}
+    },
+    "By Device Class": {
+      "Class I": {},
+      "Class II": {},
+      "Class III": {},
+      "Others": {}
+    },
+    "By Client / End-User": {
+      "Pharmaceutical companies": {},
+      "Biopharmaceutical & Biotech companies": {},
+      "Medical Device Companies": {},
+      "Others (Academic/Research Institutions)": {}
+    },
+    "By Region": {
+      "North America": {
+        "U.S.": {},
+        "Canada": {}
+      },
+      "Europe": {
+        "Germany": {},
+        "U.K.": {},
+        "Italy": {},
+        "France": {},
+        "Spain": {},
+        "Russia": {},
+        "Rest of Europe": {}
+      },
+      "Asia Pacific": {
+        "China": {},
+        "Japan": {},
+        "India": {},
+        "South Korea": {},
+        "ASEAN": {},
+        "Australia": {},
+        "Rest of Asia Pacific": {}
+      },
+      "Middle East & Africa": {
+        "GCC": {},
+        "South Africa": {},
+        "Rest of Middle East & Africa": {}
+      },
+      "Latin America": {
+        "Brazil": {},
+        "Argentina": {},
+        "Mexico": {},
+        "Rest of Latin America": {}
+      }
+    }
+  }
+}

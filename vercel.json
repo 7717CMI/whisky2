@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "app/api/process-data/route.ts": {
+      "maxDuration": 300
+    }
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "installCommand": "npm install"
+}
