@@ -1183,7 +1183,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
     const limitedBubbles = bubbles.slice(0, maxBubbles)
 
     const xLabel = 'CAGR Index'
-    const yLabel = 'Market Share Index (2023)'
+    const yLabel = 'Market Share Index (2025)'
 
     return { bubbles: limitedBubbles, xLabel, yLabel, totalBubbles: bubbles.length }
   }, [data, activeFilters, selectedGeography, selectedSegmentType, maxBubbles, isOpportunityMode])
@@ -1445,7 +1445,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
       .style('font-size', '11px')
       .style('fill', '#000000')
       .style('font-style', 'italic')
-      .text(`Bubble size represents 2031 market size in ${selectedGeography} | All values projected to 2031`)
+      .text(`Bubble size represents 2033 market size in ${selectedGeography} | All values projected to 2033`)
 
   }, [chartData, dimensions, selectedGeography])
 
@@ -1771,7 +1771,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">Market Share Index (2023):</span>
+                  <span className="text-sm text-black">Market Share Index (2025):</span>
                   <span className="text-sm font-bold text-purple-600">
                     {tooltipData.yIndex.toFixed(1)}
                   </span>
@@ -1788,7 +1788,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
               <div className="pt-2 mt-2 border-t border-gray-200">
                 <p className="text-xs font-semibold text-black mb-2">ACTUAL VALUES</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">Market Size (2031):</span>
+                  <span className="text-sm text-black">Market Size (2033):</span>
                   <div className="text-right">
                     <span className="text-sm font-semibold text-black">
                       {tooltipData.currentValue.toLocaleString(undefined, { 
@@ -1800,13 +1800,13 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">Market Share (2023):</span>
+                  <span className="text-sm text-black">Market Share (2025):</span>
                   <span className="text-sm font-semibold text-blue-600">
                     {tooltipData.marketShare.toFixed(2)}%
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">CAGR (2023-2031):</span>
+                  <span className="text-sm text-black">CAGR (2025-2033):</span>
                   <span className={`text-sm font-semibold ${
                     tooltipData.cagr > 0 ? 'text-green-600' : tooltipData.cagr < 0 ? 'text-red-600' : 'text-black'
                   }`}>
@@ -1814,7 +1814,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">Growth (2023-2031):</span>
+                  <span className="text-sm text-black">Growth (2025-2033):</span>
                   <span className={`text-sm font-semibold ${
                     tooltipData.absoluteGrowth > 0 ? 'text-green-600' : tooltipData.absoluteGrowth < 0 ? 'text-red-600' : 'text-black'
                   }`}>
@@ -1854,7 +1854,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
               </div>
               <div>
                 <p className="text-sm font-medium text-black">
-                  {isOpportunityMode ? 'Market Size Index' : 'Market Share Index (2023)'}
+                  {isOpportunityMode ? 'Market Size Index' : 'Market Share Index (2025)'}
                 </p>
                 <p className="text-xs text-black">
                   {isOpportunityMode 

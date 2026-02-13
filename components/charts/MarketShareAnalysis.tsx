@@ -32,7 +32,7 @@ export function MarketShareAnalysis({ year: propYear = 2023 }: MarketShareAnalys
       }
       return years
     }
-    return [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027]
+    return [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029]
   }, [data])
 
   // Filter data based on selected filters
