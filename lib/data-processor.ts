@@ -212,6 +212,22 @@ export function filterData(
     })
   }
   
+  // Pre-compute which selected geographies have their own records for the current segment type
+  // This is used to avoid double-counting by NOT including Global/child fallback records
+  // when the selected geography already has its own data
+  const selectedGeosWithOwnData = new Set<string>()
+  if (filters.geographies.length > 0) {
+    for (const geo of filters.geographies) {
+      const hasOwnData = data.some(r =>
+        r.geography === geo &&
+        r.segment_type === filters.segmentType
+      )
+      if (hasOwnData) {
+        selectedGeosWithOwnData.add(geo)
+      }
+    }
+  }
+
   const filtered = data.filter((record) => {
     // 1. Geography filter - enhanced to handle parent-child relationships
     // In geography mode, when a parent geography is selected (e.g., "North America"),
@@ -232,11 +248,10 @@ export function filterData(
       geoMatch = true
     }
 
-    // In ALL view modes, if no records match the selected geographies for this segment type,
-    // we should include Global data as a fallback (handled later in aggregation)
-    // This is critical for segment-mode when data only exists under "Global" but user selects regional geographies
+    // Fallback logic: include child-geography or Global records ONLY when
+    // the selected geography does NOT have its own data for the current segment type.
+    // This prevents double-counting (e.g., North America + U.S. + Canada + Global).
     if (!geoMatch) {
-      // Check if any selected geography is a parent of this record's geography
       // Use dynamic region-to-country mapping from data if available, with fallback
       const regionToCountriesMap: Record<string, string[]> = geographyCountries || {
         'North America': ['U.S.', 'Canada'],
@@ -248,28 +263,29 @@ export function filterData(
         'Africa': ['North Africa', 'Central Africa', 'South Africa']
       }
 
-      // Build a set of all known regions and countries for quick lookup
-      const allRegions = Object.keys(regionToCountriesMap)
-      const allCountries = new Set<string>()
-      Object.values(regionToCountriesMap).forEach(countries => {
-        countries.forEach(c => allCountries.add(c))
-      })
-
       // If a region is selected and this record is a country in that region, include it
+      // BUT only if the selected region does NOT already have its own data (to avoid double-counting)
       for (const selectedGeo of filters.geographies) {
         if (regionToCountriesMap[selectedGeo]?.includes(record.geography)) {
-          geoMatch = true
+          // Only include child geography if the parent region has NO own data for this segment type
+          if (!selectedGeosWithOwnData.has(selectedGeo)) {
+            geoMatch = true
+          }
           break
         }
       }
 
-      // IMPORTANT: Include Global data when non-global geographies are selected
-      // Segment types like "By Technology" only exist under Global
-      // When user selects "North America" or "U.S." + "By Technology", we need Global's data
+      // Include Global data when non-global geographies are selected
+      // BUT only as a fallback when the selected geography has NO own data for this segment type
+      // This handles cases where a segment type only exists under Global
       if (!geoMatch && record.geography === 'Global') {
         const hasNonGlobalSelection = filters.geographies.some(g => g !== 'Global')
         if (hasNonGlobalSelection) {
-          geoMatch = true
+          // Only fall back to Global if ALL selected geographies lack their own data
+          const allSelectedLackData = filters.geographies.every(g => !selectedGeosWithOwnData.has(g))
+          if (allSelectedLackData) {
+            geoMatch = true
+          }
         }
       }
     }
