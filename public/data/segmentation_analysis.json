@@ -1,47 +1,24 @@
 {
   "Global": {
-    "By Product / Device Type": {
-      "Drug-Device Combination Products": {
-        "Inhalers & nebulizers": {},
-        "Insulin pumps & auto-injectors": {},
-        "Pre-filled syringes & pen injectors": {},
-        "Sterile injectables": {},
-        "Topical/Transdermal patches": {},
-        "Other Drug-Device Combination Products": {}
-      },
-      "Medical Devices": {
-        "Surgical instruments": {},
-        "Orthopedic implants & prosthetics": {},
-        "Cardiovascular Devices": {},
-        "Respiratory Care Devices": {},
-        "Other Medical Devices": {}
-      },
-      "Diagnostics & Laboratory Devices/Equipment": {
-        "Imaging devices": {},
-        "In-vitro diagnostic (IVD) kits": {},
-        "Point-of-care diagnostic devices": {},
-        "Molecular diagnostics devices": {},
-        "Other Diagnostics & Laboratory Devices/Equipment": {}
-      },
-      "Other Product / Device Types": {}
+    "By Technology": {
+      "Single-Phase Micro Inverters": {},
+      "Three-Phase Micro Inverters": {}
     },
-    "By Service Type": {
-      "Design & Development & Engineering Services": {},
-      "Contract manufacturing": {},
-      "Supply Chain Management": {},
-      "Quality & Regulations": {},
-      "Other Value-Added Services": {}
+    "By Power Rating": {
+      "<250 W": {},
+      "250 W - 500 W": {},
+      ">500 W": {}
     },
-    "By Device Class": {
-      "Class I": {},
-      "Class II": {},
-      "Class III": {}
+    "By Provider": {
+      "Direct Sales through OEM": {},
+      "Distributors and Wholesalers": {},
+      "Retailers": {},
+      "Solar Installers and Contractors": {}
     },
-    "By Client / End-User": {
-      "Pharmaceutical companies": {},
-      "Biopharmaceutical & Biotech companies": {},
-      "Medical Device Companies": {},
-      "Other Client / End-Users": {}
+    "By End-User": {
+      "Residential": {},
+      "Commercial and Industrial": {},
+      "Utility-scale": {}
     },
     "By Region": {
       "North America": {
@@ -51,8 +28,8 @@
       "Europe": {
         "U.K.": {},
         "Germany": {},
-        "France": {},
         "Italy": {},
+        "France": {},
         "Spain": {},
         "Russia": {},
         "Rest of Europe": {}
@@ -68,19 +45,14 @@
       },
       "Latin America": {
         "Brazil": {},
-        "Mexico": {},
         "Argentina": {},
+        "Mexico": {},
         "Rest of Latin America": {}
       },
-      "Middle East": {
+      "Middle East & Africa": {
         "GCC": {},
-        "Israel": {},
-        "Rest of Middle East": {}
-      },
-      "Africa": {
-        "North Africa": {},
-        "Central Africa": {},
-        "South Africa": {}
+        "South Africa": {},
+        "Rest of Middle East & Africa": {}
       }
     }
   }

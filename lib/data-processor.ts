@@ -169,7 +169,8 @@ export function filterData(
     const segmentsFromSameType = advancedSegments.filter(
       (seg: any) => seg.type === filters.segmentType
     )
-    const hasSegmentsForCurrentType = segmentsFromSameType.length > 0
+    // Also check filters.segments (from SegmentMultiSelect single-type selection)
+    const hasSegmentsForCurrentType = segmentsFromSameType.length > 0 || selectedSegments.length > 0
 
     if (hasSegmentsForCurrentType) {
       // User has explicitly selected segments - DON'T use automatic level detection
@@ -258,8 +259,7 @@ export function filterData(
         'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
         'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
         'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
-        'Middle East': ['GCC', 'Israel', 'Rest of Middle East'],
-        'Africa': ['North Africa', 'Central Africa', 'South Africa']
+        'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa']
       }
 
       // If a region is selected and this record is a country in that region, include it
@@ -299,7 +299,7 @@ export function filterData(
       // When a specific level is selected, we need to include records that have data at that level
       const recordLevel = record.aggregation_level
 
-      // For Level 2 (first segment level like Drug-Device, Medical Devices, etc.):
+      // For Level 2 (first segment level):
       // ONLY include records at level 2. Do NOT also include leaf children,
       // because parent nodes already contain the correct aggregated totals.
       // Children (level 3+) are only needed when user explicitly drills down.
@@ -377,7 +377,7 @@ export function filterData(
         // Leaf record - include it unless its parent is already included as an aggregated record
         if (selectedLevel1Segments.length > 0) {
           if (isRegionalSegmentType) {
-            const regionalGeographies = ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East', 'Africa', 'ASEAN', 'SAARC Region', 'CIS Region', 'Global']
+            const regionalGeographies = ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa', 'Middle East', 'Africa', 'ASEAN', 'SAARC Region', 'CIS Region', 'Global']
             const selectedAreGeographies = selectedLevel1Segments.some(seg => regionalGeographies.includes(seg))
             const selectedAreSegments = selectedLevel1Segments.some(seg => !regionalGeographies.includes(seg))
 
@@ -404,8 +404,10 @@ export function filterData(
               hierarchy.level_1 === selectedSeg
             )
 
-            if (parentIsSelected) {
+            if (parentIsSelected && !isExplicitlySelectedSegment) {
               // Parent aggregated record is already included - exclude this leaf child
+              // BUT if this leaf IS the explicitly selected segment (flat segment with no children),
+              // include it because there's no separate aggregated parent record for flat segments
               return false
             }
 
@@ -971,8 +973,7 @@ export function prepareGroupedBarData(
           'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
           'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
           'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
-          'Middle East': ['GCC', 'Israel', 'Rest of Middle East'],
-          'Africa': ['North Africa', 'Central Africa', 'South Africa']
+          'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa']
         }
 
         records.forEach(record => {
@@ -1074,8 +1075,7 @@ export function prepareGroupedBarData(
             'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
             'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
             'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
-            'Middle East': ['GCC', 'Israel', 'Rest of Middle East'],
-            'Africa': ['North Africa', 'Central Africa', 'South Africa']
+            'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa']
           }
 
           // Check if this record's geography should be aggregated under a parent
@@ -1278,8 +1278,7 @@ export function prepareLineChartData(
           'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
           'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
           'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
-          'Middle East': ['GCC', 'Israel', 'Rest of Middle East'],
-          'Africa': ['North Africa', 'Central Africa', 'South Africa']
+          'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa']
         }
 
         let mappedGeo = record.geography
@@ -1815,8 +1814,7 @@ export function prepareIntelligentMultiLevelData(
     'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
     'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
     'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
-    'Middle East': ['GCC', 'Israel', 'Rest of Middle East'],
-    'Africa': ['North Africa', 'Central Africa', 'South Africa']
+    'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa']
   }
 
   // Check if we need Global-to-geography mapping (for any non-Global geography selection)
@@ -1852,7 +1850,7 @@ export function prepareIntelligentMultiLevelData(
     // 1. Geography names (e.g., North America, Asia Pacific) - Level 1 selections
     // 2. Country/state names (e.g., U.S., Canada, Germany) - Level 2+ selections
     if (isRegionalSegmentType && hasExplicitLevel1Selection) {
-      const regionalGeographies = ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East', 'Africa', 'ASEAN', 'SAARC Region', 'CIS Region', 'Global']
+      const regionalGeographies = ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa', 'Middle East', 'Africa', 'ASEAN', 'SAARC Region', 'CIS Region', 'Global']
 
       // Check if selected segments are geography names or country/segment names
       const selectedAreGeographies = selectedLevel1Segments.some((seg: string) => regionalGeographies.includes(seg))

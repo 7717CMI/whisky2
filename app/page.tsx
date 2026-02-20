@@ -204,7 +204,7 @@ export default function DashboardPage() {
                 Coherent Dashboard
               </h1>
               <h2 className="text-sm text-black">
-                {dashboardName || 'Global Medtech & Biopharma Device CMO/CDMO  Market'}
+                {dashboardName || 'Global Solar Micro Inverter Market'}
               </h2>
             </div>
           </div>

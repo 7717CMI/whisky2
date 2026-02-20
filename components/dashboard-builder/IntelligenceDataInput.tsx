@@ -383,15 +383,13 @@ export function IntelligenceDataInput({
     'Latin America',
     'Europe',
     'Asia Pacific',
-    'Middle East',
-    'Africa'
+    'Middle East & Africa'
   ]
 
   const endUserSegments = [
-    'Hospital',
-    'Speciality Center',
-    'Research Institute',
-    'Retail Pharmacy'
+    'Residential',
+    'Commercial and Industrial',
+    'Utility-scale'
   ]
 
   const distributorSegments = [

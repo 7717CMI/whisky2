@@ -210,7 +210,7 @@ export function createTopMarketFilters(data: ComparisonData | null): Partial<Fil
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Drug Class',
+    segmentType: firstSegmentType || 'By Technology',
     yearRange: [2023, 2027],
     dataType: 'value'
   }
@@ -223,7 +223,7 @@ export function createTopMarketFilters(data: ComparisonData | null): Partial<Fil
 export function createGrowthLeadersFilters(data: ComparisonData | null): Partial<FilterState> {
   if (!data) return {
     viewMode: 'geography-mode',
-    yearRange: [2025, 2033],
+    yearRange: [2025, 2031],
     dataType: 'value'
   }
 
@@ -238,8 +238,8 @@ export function createGrowthLeadersFilters(data: ComparisonData | null): Partial
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Drug Class',
-    yearRange: [2025, 2033],
+    segmentType: firstSegmentType || 'By Technology',
+    yearRange: [2025, 2031],
     dataType: 'value'
   }
 }
@@ -251,7 +251,7 @@ export function createGrowthLeadersFilters(data: ComparisonData | null): Partial
 export function createEmergingMarketsFilters(data: ComparisonData | null): Partial<FilterState> {
   if (!data) return {
     viewMode: 'geography-mode',
-    yearRange: [2025, 2033],
+    yearRange: [2025, 2031],
     dataType: 'value'
   }
 
@@ -266,8 +266,8 @@ export function createEmergingMarketsFilters(data: ComparisonData | null): Parti
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topCountries,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Drug Class',
-    yearRange: [2025, 2033],
+    segmentType: firstSegmentType || 'By Technology',
+    yearRange: [2025, 2031],
     dataType: 'value'
   }
 }

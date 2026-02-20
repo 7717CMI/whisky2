@@ -74,7 +74,7 @@ function getDefaultFilters(data: ComparisonData | null): FilterState {
     geographies: [],
     segments: [],
     segmentType: '',
-    yearRange: [2021, 2025],
+    yearRange: [2019, 2031],
     dataType: 'value',
     viewMode: 'segment-mode',
     businessType: undefined,
@@ -122,7 +122,7 @@ function getDefaultOpportunityFilters(data: ComparisonData | null): FilterState 
       geographies: [],
       segments: [],
       segmentType: '',
-      yearRange: [2025, 2033], // Focus on forecast period for CAGR analysis
+      yearRange: [2025, 2031], // Focus on forecast period for CAGR analysis
       dataType: 'value',
       viewMode: 'segment-mode',
       businessType: undefined,
@@ -260,10 +260,7 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         // Use current segment type if it has volume data, otherwise find the first one that does
         let targetSegmentType = state.filters.segmentType
         if (!volumeSegmentTypes.has(targetSegmentType)) {
-          // Try "By Product Type" first for backwards compatibility
-          if (volumeSegmentTypes.has('By Product Type')) {
-            targetSegmentType = 'By Product Type'
-          } else if (volumeSegmentTypes.size > 0) {
+          if (volumeSegmentTypes.size > 0) {
             // Use the first segment type that has volume records
             targetSegmentType = Array.from(volumeSegmentTypes)[0]
           } else if (allSegmentTypes.length > 0) {
@@ -462,7 +459,7 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         ...(newFilters.geographies !== undefined && { geographies: newFilters.geographies || [] }),
         ...(newFilters.segments !== undefined && { segments: newFilters.segments || [] }),
         ...(newFilters.segmentType !== undefined && { segmentType: newFilters.segmentType || '' }),
-        ...(newFilters.yearRange !== undefined && { yearRange: newFilters.yearRange || [2025, 2033] }),
+        ...(newFilters.yearRange !== undefined && { yearRange: newFilters.yearRange || [2019, 2031] }),
         ...(newFilters.dataType !== undefined && { dataType: newFilters.dataType || 'value' }),
         ...(newFilters.viewMode !== undefined && { viewMode: newFilters.viewMode || 'segment-mode' }),
         ...(newFilters.businessType !== undefined && { businessType: newFilters.businessType }),

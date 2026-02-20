@@ -30,10 +30,9 @@ export function convertCustomerDataToIntelligenceFormat(
       name: customerData.name,
       region: customerData.region,
       endUserSegment: customerData.endUserSegment,
-      type: customerData.endUserSegment === 'Hospital' ? 'hospital' 
-            : customerData.endUserSegment === 'Speciality Center' ? 'speciality' 
-            : customerData.endUserSegment === 'Research Institute' ? 'research'
-            : 'pharmacy'
+      type: customerData.endUserSegment === 'Residential' ? 'residential'
+            : customerData.endUserSegment === 'Commercial and Industrial' ? 'commercial'
+            : 'utility'
     }
     
     grouped.get(key)!.push(customer)

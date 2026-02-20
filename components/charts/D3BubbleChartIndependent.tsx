@@ -470,7 +470,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
       // Check if data exists for selected geographies with the current segment type
       const selectedGeos = activeFilters.geographies || []
       const hasSpecificRegions = selectedGeos.length > 0 && !selectedGeos.includes('Global')
-      const regionalGeographies = ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East', 'Africa', 'ASEAN', 'SAARC Region', 'CIS Region']
+      const regionalGeographies = ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa', 'Middle East', 'Africa', 'ASEAN', 'SAARC Region', 'CIS Region']
       const hasRegionalSelection = selectedGeos.some(g => regionalGeographies.includes(g))
 
       if (hasSpecificRegions && hasRegionalSelection) {
@@ -510,12 +510,11 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
 
           // Map Global data to each selected regional geography
           const regionalMarketShares: Record<string, number> = {
-            'North America': 0.32,
-            'Europe': 0.28,
-            'Asia Pacific': 0.25,
-            'Latin America': 0.08,
-            'Middle East': 0.04,
-            'Africa': 0.03,
+            'North America': 0.31,
+            'Europe': 0.22,
+            'Asia Pacific': 0.41,
+            'Latin America': 0.02,
+            'Middle East & Africa': 0.04,
             'ASEAN': 0.10,
             'SAARC Region': 0.08,
             'CIS Region': 0.05
@@ -613,7 +612,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
 
         if (isByRegionSegmentType) {
           const selectedGeos = activeFilters.geographies || []
-          const mainRegions = ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East', 'Africa', 'ASEAN', 'SAARC Region', 'CIS Region']
+          const mainRegions = ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa', 'Middle East', 'Africa', 'ASEAN', 'SAARC Region', 'CIS Region']
 
           // Check if a specific region is selected (not Global, not multiple regions)
           const isSingleRegionSelected = selectedGeos.length === 1 &&
@@ -1182,7 +1181,8 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
     const limitedBubbles = bubbles.slice(0, maxBubbles)
 
     const xLabel = 'CAGR Index'
-    const yLabel = 'Market Share Index (2025)'
+    const baseYr = data?.metadata?.base_year || 2025
+    const yLabel = `Market Share Index (${baseYr})`
 
     return { bubbles: limitedBubbles, xLabel, yLabel, totalBubbles: bubbles.length }
   }, [data, activeFilters, selectedGeography, selectedSegmentType, maxBubbles, isOpportunityMode])
@@ -1444,7 +1444,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
       .style('font-size', '11px')
       .style('fill', '#000000')
       .style('font-style', 'italic')
-      .text(`Bubble size represents 2033 market size in ${selectedGeography} | All values projected to 2033`)
+      .text(`Bubble size represents ${data?.metadata?.forecast_year || 2031} market size in ${selectedGeography} | All values projected to ${data?.metadata?.forecast_year || 2031}`)
 
   }, [chartData, dimensions, selectedGeography])
 
@@ -1770,7 +1770,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">Market Share Index (2025):</span>
+                  <span className="text-sm text-black">Market Share Index ({data?.metadata?.base_year || 2025}):</span>
                   <span className="text-sm font-bold text-purple-600">
                     {tooltipData.yIndex.toFixed(1)}
                   </span>
@@ -1787,7 +1787,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
               <div className="pt-2 mt-2 border-t border-gray-200">
                 <p className="text-xs font-semibold text-black mb-2">ACTUAL VALUES</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">Market Size (2033):</span>
+                  <span className="text-sm text-black">Market Size ({data?.metadata?.forecast_year || 2031}):</span>
                   <div className="text-right">
                     <span className="text-sm font-semibold text-black">
                       {tooltipData.currentValue.toLocaleString(undefined, { 
@@ -1799,13 +1799,13 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">Market Share (2025):</span>
+                  <span className="text-sm text-black">Market Share ({data?.metadata?.base_year || 2025}):</span>
                   <span className="text-sm font-semibold text-blue-600">
                     {tooltipData.marketShare.toFixed(2)}%
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">CAGR (2025-2033):</span>
+                  <span className="text-sm text-black">CAGR ({data?.metadata?.base_year || 2025}-{data?.metadata?.forecast_year || 2031}):</span>
                   <span className={`text-sm font-semibold ${
                     tooltipData.cagr > 0 ? 'text-green-600' : tooltipData.cagr < 0 ? 'text-red-600' : 'text-black'
                   }`}>
@@ -1813,7 +1813,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-black">Growth (2025-2033):</span>
+                  <span className="text-sm text-black">Growth ({data?.metadata?.base_year || 2025}-{data?.metadata?.forecast_year || 2031}):</span>
                   <span className={`text-sm font-semibold ${
                     tooltipData.absoluteGrowth > 0 ? 'text-green-600' : tooltipData.absoluteGrowth < 0 ? 'text-red-600' : 'text-black'
                   }`}>
@@ -1853,7 +1853,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
               </div>
               <div>
                 <p className="text-sm font-medium text-black">
-                  {isOpportunityMode ? 'Market Size Index' : 'Market Share Index (2025)'}
+                  {isOpportunityMode ? 'Market Size Index' : `Market Share Index (${data?.metadata?.base_year || 2025})`}
                 </p>
                 <p className="text-xs text-black">
                   {isOpportunityMode 

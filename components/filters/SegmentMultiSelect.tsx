@@ -198,11 +198,9 @@ export function SegmentMultiSelect() {
   if (!data) return null
 
   const selectedCount = filters.segments.length
-  // Filter segment types based on data type - Volume only has "By Product Type"
+  // Get all available segment types
   const allSegmentTypes = Object.keys(data.dimensions.segments)
-  const segmentTypes = filters.dataType === 'volume'
-    ? allSegmentTypes.filter(type => type === 'By Product Type')
-    : allSegmentTypes
+  const segmentTypes = allSegmentTypes
 
   return (
     <div className="space-y-4" ref={dropdownRef}>

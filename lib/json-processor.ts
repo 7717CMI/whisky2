@@ -1141,6 +1141,7 @@ async function processSegmentTypeAsync(
       })
       
       // Parse CAGR - it might be a string like "5.2%" or a number
+      // If not provided in data, calculate from time series
       let cagr = 0
       if (data.CAGR !== null && data.CAGR !== undefined) {
         if (typeof data.CAGR === 'string') {
@@ -1149,6 +1150,17 @@ async function processSegmentTypeAsync(
           cagr = parseFloat(cagrStr) || 0
         } else if (typeof data.CAGR === 'number') {
           cagr = data.CAGR
+        }
+      } else {
+        // Calculate CAGR from base year to forecast year
+        // Base year = midpoint - 1 (e.g., 2024 for 2019-2031 range)
+        const cagrStartYear = Math.floor((allYears[0] + allYears[allYears.length - 1]) / 2) - 1
+        const cagrEndYear = allYears[allYears.length - 1]
+        const startVal = timeSeries[cagrStartYear] || 0
+        const endVal = timeSeries[cagrEndYear] || 0
+        const numYears = cagrEndYear - cagrStartYear
+        if (startVal > 0 && endVal > 0 && numYears > 0) {
+          cagr = (Math.pow(endVal / startVal, 1 / numYears) - 1) * 100
         }
       }
       
@@ -1222,7 +1234,7 @@ export async function processJsonDataAsync(
     }
     const startYear = Math.min(...allYears)
     const forecastYear = Math.max(...allYears)
-    const baseYear = Math.floor((startYear + forecastYear) / 2)
+    const baseYear = Math.floor((startYear + forecastYear) / 2) - 1
     console.log(`Years: ${startYear} to ${forecastYear}, base: ${baseYear}`)
     
     // Extract geographies from segmentation data (first level keys)
@@ -1440,9 +1452,9 @@ export async function processJsonDataAsync(
     
     // Build metadata
     const metadata: Metadata = {
-      market_name: 'Medtech & Biopharma Device CMO/CDMO Market',
+      market_name: 'Solar Micro Inverter Market',
       market_type: 'Market Analysis',
-      industry: 'Chemicals & Materials',
+      industry: 'Energy & Power',
       years: allYears,
       start_year: startYear,
       base_year: baseYear,

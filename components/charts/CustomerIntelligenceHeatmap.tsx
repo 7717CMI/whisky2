@@ -185,15 +185,13 @@ export function CustomerIntelligenceHeatmap({ title, height = 600, filePath }: C
       'Latin America',
       'Europe',
       'Asia Pacific',
-      'Middle East',
-      'Africa'
+      'Middle East & Africa'
     ]
     
     const defaultSegments = [
-      'Hospital',
-      'Speciality Center',
-      'Research Institute',
-      'Retail Pharmacy'
+      'Residential',
+      'Commercial and Industrial',
+      'Utility-scale'
     ]
 
     // First, try to extract regions and segments from loaded customer data
@@ -214,15 +212,11 @@ export function CustomerIntelligenceHeatmap({ title, height = 600, filePath }: C
       // Get regions from dimensions
       const allRegions = data.dimensions.geographies.regions || defaultRegions
       
-      // Get end user segments from dimensions and add Retail Pharmacy
-      const endUserDimension = data.dimensions.segments['By End User']
+      // Get end user segments from dimensions
+      const endUserDimension = data.dimensions.segments['By End-User']
       const segments = endUserDimension?.items || []
-      
-      // Ensure we have all 4 industry categories (add Retail Pharmacy if not present)
+
       const allSegments = segments.length > 0 ? [...segments] : [...defaultSegments]
-      if (!allSegments.includes('Retail Pharmacy')) {
-        allSegments.push('Retail Pharmacy')
-      }
 
       return {
         regions: allRegions.length > 0 ? allRegions : defaultRegions,

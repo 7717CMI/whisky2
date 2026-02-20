@@ -8,7 +8,7 @@ export interface Customer {
   name: string
   region: string
   endUserSegment: string
-  type: 'hospital' | 'speciality' | 'research' | 'pharmacy'
+  type: 'residential' | 'commercial' | 'utility'
 }
 
 export interface CustomerIntelligenceData {
@@ -19,24 +19,22 @@ export interface CustomerIntelligenceData {
 }
 
 // Realistic customer name generators by type
-const hospitalNames = [
-  'Memorial', 'General', 'Regional', 'Medical Center', 'University Hospital',
-  'Community Hospital', 'City Hospital', 'Metropolitan', 'Central', 'National'
+const residentialNames = [
+  'Solar Home', 'Rooftop Solar', 'Green Energy Home', 'SunPower Residential',
+  'HomeGrid Solar', 'Bright Home Energy', 'SolarEdge Home', 'EcoHome Solar',
+  'Smart Home Solar', 'Residential Power'
 ]
 
-const specialityNames = [
-  'Oncology Center', 'Cancer Institute', 'Specialty Clinic', 'Treatment Center',
-  'Care Center', 'Medical Institute', 'Health Center', 'Therapy Center'
+const commercialNames = [
+  'Industrial Solar Park', 'Commercial Solar Solutions', 'Business Energy Center',
+  'Solar Power Plant', 'Corporate Solar Hub', 'Enterprise Energy', 'Solar Campus',
+  'Factory Solar System'
 ]
 
-const researchNames = [
-  'Research Institute', 'Medical Research', 'Clinical Research', 'Biomedical Institute',
-  'Cancer Research', 'Oncology Research', 'Medical Foundation', 'Research Center'
-]
-
-const pharmacyNames = [
-  'Pharmacy', 'Drug Store', 'Retail Pharmacy', 'Community Pharmacy',
-  'Health Pharmacy', 'Medical Pharmacy', 'Care Pharmacy', 'Wellness Pharmacy'
+const utilityNames = [
+  'Grid-Scale Solar Farm', 'Utility Solar Station', 'Power Grid Solar',
+  'Megawatt Solar Park', 'Regional Solar Utility', 'Solar Generation Station',
+  'Grid Solar Complex', 'Utility Power Station'
 ]
 
 const locationSuffixes = [
@@ -50,33 +48,30 @@ const regionPrefixes: Record<string, string[]> = {
   'Latin America': ['Latino', 'Americas', 'Continental', 'Regional', 'National'],
   'Europe': ['European', 'Continental', 'Regional', 'National', 'Metropolitan'],
   'Asia Pacific': ['Asia', 'Pacific', 'Regional', 'National', 'Metropolitan'],
-  'Middle East': ['Middle East', 'Regional', 'National', 'Gulf', 'Continental'],
-  'Africa': ['African', 'Continental', 'Regional', 'National', 'Metropolitan']
+  'Middle East & Africa': ['Middle East', 'Regional', 'National', 'Gulf', 'African']
 }
 
 function generateCustomerName(region: string, endUserSegment: string, index: number): string {
   const prefixes = regionPrefixes[region] || ['Regional', 'National']
   const prefix = prefixes[index % prefixes.length]
   const location = locationSuffixes[index % locationSuffixes.length]
-  
+
   let baseName = ''
-  if (endUserSegment === 'Hospital') {
-    baseName = hospitalNames[index % hospitalNames.length]
-  } else if (endUserSegment === 'Speciality Center') {
-    baseName = specialityNames[index % specialityNames.length]
-  } else if (endUserSegment === 'Research Institute') {
-    baseName = researchNames[index % researchNames.length]
+  if (endUserSegment === 'Residential') {
+    baseName = residentialNames[index % residentialNames.length]
+  } else if (endUserSegment === 'Commercial and Industrial') {
+    baseName = commercialNames[index % commercialNames.length]
   } else {
-    baseName = pharmacyNames[index % pharmacyNames.length]
+    baseName = utilityNames[index % utilityNames.length]
   }
-  
+
   return `${prefix} ${baseName} ${location}`
 }
 
 /**
  * Generate realistic customer counts based on region and end user segment
- * Hospitals typically have more customers in developed regions
- * Research institutes are more evenly distributed
+ * Residential typically has more installations in developed regions
+ * Utility-scale is more concentrated in large markets
  */
 // Deterministic seed function for consistent data generation
 function seededRandom(seed: number): () => number {
@@ -94,36 +89,34 @@ function generateCustomerCount(region: string, endUserSegment: string): number {
     'Europe': 1.0,
     'Asia Pacific': 1.3,
     'Latin America': 0.7,
-    'Middle East': 0.6,
-    'Africa': 0.5
+    'Middle East & Africa': 0.6
   }
-  
+
   // Base multipliers by end user type
   const segmentMultipliers: Record<string, number> = {
-    'Hospital': 1.5,           // Most common
-    'Speciality Center': 1.0,  // Medium
-    'Research Institute': 0.6, // Less common
-    'Retail Pharmacy': 0.8     // Medium-low
+    'Residential': 1.5,              // Most common
+    'Commercial and Industrial': 1.0, // Medium
+    'Utility-scale': 0.4              // Fewer but larger projects
   }
-  
+
   // Base count range
   const baseMin = 50
   const baseMax = 300
-  
+
   const regionMulti = regionMultipliers[region] || 1.0
   const segmentMulti = segmentMultipliers[endUserSegment] || 1.0
-  
+
   // Calculate realistic range
   const min = Math.floor(baseMin * regionMulti * segmentMulti)
   const max = Math.floor(baseMax * regionMulti * segmentMulti)
-  
+
   // Create deterministic seed based on region and segment
   const seed = (region.charCodeAt(0) * 1000 + endUserSegment.charCodeAt(0) * 100) % 10000
   const random = seededRandom(seed)
-  
+
   // Generate consistent count
   const count = Math.floor(random() * (max - min + 1)) + min
-  
+
   return Math.max(10, count) // Minimum 10 customers
 }
 
@@ -136,24 +129,22 @@ export function generateCustomerIntelligenceData(): CustomerIntelligenceData[] {
     'Latin America',
     'Europe',
     'Asia Pacific',
-    'Middle East',
-    'Africa'
+    'Middle East & Africa'
   ]
-  
+
   const endUserSegments = [
-    'Hospital',
-    'Speciality Center',
-    'Research Institute',
-    'Retail Pharmacy'
+    'Residential',
+    'Commercial and Industrial',
+    'Utility-scale'
   ]
-  
+
   const data: CustomerIntelligenceData[] = []
-  
+
   regions.forEach(region => {
     endUserSegments.forEach(endUserSegment => {
       const customerCount = generateCustomerCount(region, endUserSegment)
       const customers: Customer[] = []
-      
+
       // Generate customer names (deterministic based on region, segment, and index)
       for (let i = 0; i < customerCount; i++) {
         customers.push({
@@ -161,13 +152,12 @@ export function generateCustomerIntelligenceData(): CustomerIntelligenceData[] {
           name: generateCustomerName(region, endUserSegment, i),
           region,
           endUserSegment,
-          type: endUserSegment === 'Hospital' ? 'hospital' 
-                : endUserSegment === 'Speciality Center' ? 'speciality' 
-                : endUserSegment === 'Research Institute' ? 'research'
-                : 'pharmacy'
+          type: endUserSegment === 'Residential' ? 'residential'
+                : endUserSegment === 'Commercial and Industrial' ? 'commercial'
+                : 'utility'
         })
       }
-      
+
       data.push({
         region,
         endUserSegment,
@@ -176,7 +166,7 @@ export function generateCustomerIntelligenceData(): CustomerIntelligenceData[] {
       })
     })
   })
-  
+
   return data
 }
 
@@ -215,7 +205,7 @@ export function getCustomerCountForCell(
 export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): CustomerIntelligenceData[] {
   // Map to store customers by region and end user segment
   const customerMap = new Map<string, Customer[]>()
-  
+
   // Common column name variations
   const getColumnValue = (row: Record<string, any>, possibleNames: string[]): string | null => {
     for (const name of possibleNames) {
@@ -248,45 +238,45 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
     }
     return null
   }
-  
+
   // Log first row structure for debugging
   if (rows.length > 0) {
     console.log('Parser - First row keys:', Object.keys(rows[0]))
     console.log('Parser - First row sample:', rows[0])
   }
-  
+
   let processedCount = 0
   let skippedCount = 0
-  
+
   // Process each row
   rows.forEach((row, index) => {
     // Try to extract customer name/company (most important field)
     let customerName = getColumnValue(row, [
-      'Company Name', 'Company', 'Customer Name', 'Customer', 
+      'Company Name', 'Company', 'Customer Name', 'Customer',
       'End User Name', 'Client Name', 'Organization Name',
       'Name', 'Organization', 'Institution', 'End User', 'Client'
     ])
-    
+
     // If no customer name found with standard names, try to find any field that looks like a name
     if (!customerName) {
       // Look for the first non-empty field that doesn't look like metadata
       for (const key in row) {
         // Skip metadata fields
-        if (key.startsWith('_') || 
-            key.toLowerCase().includes('sheet') || 
+        if (key.startsWith('_') ||
+            key.toLowerCase().includes('sheet') ||
             key.toLowerCase().includes('index') ||
             key.toLowerCase().includes('row')) {
           continue
         }
-        
+
         const value = row[key]
         if (value && typeof value === 'string') {
           const trimmed = value.trim()
           // If it's a reasonable length and not a placeholder, use it as name
-          if (trimmed && 
-              trimmed.length > 2 && 
+          if (trimmed &&
+              trimmed.length > 2 &&
               trimmed.length < 200 &&
-              trimmed !== 'xx' && 
+              trimmed !== 'xx' &&
               trimmed.toLowerCase() !== 'n/a' &&
               !trimmed.match(/^\d+$/) && // Not just numbers
               !trimmed.toLowerCase().includes('region') &&
@@ -298,7 +288,7 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
         }
       }
     }
-    
+
     // Skip rows without customer name
     if (!customerName) {
       skippedCount++
@@ -307,24 +297,23 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
       }
       return
     }
-    
+
     processedCount++
-    
+
     // Try to extract region
     const region = getColumnValue(row, [
       'Region', 'Geography', 'Geographic Region', 'Market Region',
       'Country', 'Location', 'Territory', 'Market', 'Area'
     ])
-    
+
     // Try to extract end user segment/type
     const endUserSegment = getColumnValue(row, [
-      'End User Type', 'End User Segment', 'Industry Category', 
+      'End User Type', 'End User Segment', 'Industry Category',
       'Industry Type', 'Segment', 'Customer Type', 'End User Category',
       'Industry', 'Category', 'Type', 'Segment Type'
     ])
-    
+
     // Normalize region - try to match common region names
-    // If no region found, try to infer from other fields or use a default
     let normalizedRegion = region || null
     if (region) {
       const lowerRegion = region.toLowerCase()
@@ -336,19 +325,15 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
         normalizedRegion = 'Europe'
       } else if (lowerRegion.includes('asia') || lowerRegion.includes('pacific')) {
         normalizedRegion = 'Asia Pacific'
-      } else if (lowerRegion.includes('middle east')) {
-        normalizedRegion = 'Middle East'
-      } else if (lowerRegion.includes('africa')) {
-        normalizedRegion = 'Africa'
+      } else if (lowerRegion.includes('middle east') || lowerRegion.includes('africa')) {
+        normalizedRegion = 'Middle East & Africa'
       } else {
-        // Keep original region if it doesn't match known patterns
         normalizedRegion = region
       }
     }
-    
+
     // If still no region, try to find it in other columns or use "Unknown"
     if (!normalizedRegion) {
-      // Try to find region in any column
       for (const key in row) {
         if (key.startsWith('_')) continue
         const value = String(row[key] || '').toLowerCase()
@@ -364,76 +349,63 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
         } else if (value.includes('asia') || value.includes('pacific')) {
           normalizedRegion = 'Asia Pacific'
           break
-        } else if (value.includes('middle east')) {
-          normalizedRegion = 'Middle East'
-          break
-        } else if (value.includes('africa')) {
-          normalizedRegion = 'Africa'
+        } else if (value.includes('middle east') || value.includes('africa')) {
+          normalizedRegion = 'Middle East & Africa'
           break
         }
       }
-      // Default to "Unknown" if still not found
       if (!normalizedRegion) {
         normalizedRegion = 'Unknown'
       }
     }
-    
+
     // Normalize end user segment
     let normalizedSegment = endUserSegment || null
     if (endUserSegment) {
       const lowerSegment = endUserSegment.toLowerCase()
-      if (lowerSegment.includes('hospital')) {
-        normalizedSegment = 'Hospital'
-      } else if (lowerSegment.includes('special') || lowerSegment.includes('specialty')) {
-        normalizedSegment = 'Speciality Center'
-      } else if (lowerSegment.includes('research') || lowerSegment.includes('institute')) {
-        normalizedSegment = 'Research Institute'
-      } else if (lowerSegment.includes('pharmacy') || lowerSegment.includes('retail')) {
-        normalizedSegment = 'Retail Pharmacy'
+      if (lowerSegment.includes('residential') || lowerSegment.includes('home')) {
+        normalizedSegment = 'Residential'
+      } else if (lowerSegment.includes('commercial') || lowerSegment.includes('industrial')) {
+        normalizedSegment = 'Commercial and Industrial'
+      } else if (lowerSegment.includes('utility') || lowerSegment.includes('grid')) {
+        normalizedSegment = 'Utility-scale'
       } else {
-        // Keep original segment if it doesn't match known patterns
         normalizedSegment = endUserSegment
       }
     }
-    
+
     // If still no segment, try to find it in other columns or use "Unknown"
     if (!normalizedSegment) {
-      // Try to find segment in any column
       for (const key in row) {
         if (key.startsWith('_')) continue
         const value = String(row[key] || '').toLowerCase()
-        if (value.includes('hospital')) {
-          normalizedSegment = 'Hospital'
+        if (value.includes('residential') || value.includes('home')) {
+          normalizedSegment = 'Residential'
           break
-        } else if (value.includes('special') || value.includes('specialty')) {
-          normalizedSegment = 'Speciality Center'
+        } else if (value.includes('commercial') || value.includes('industrial')) {
+          normalizedSegment = 'Commercial and Industrial'
           break
-        } else if (value.includes('research') || value.includes('institute')) {
-          normalizedSegment = 'Research Institute'
-          break
-        } else if (value.includes('pharmacy') || value.includes('retail')) {
-          normalizedSegment = 'Retail Pharmacy'
+        } else if (value.includes('utility') || value.includes('grid')) {
+          normalizedSegment = 'Utility-scale'
           break
         }
       }
-      // Default to "Unknown" if still not found
       if (!normalizedSegment) {
         normalizedSegment = 'Unknown'
       }
     }
-    
+
     // Create customer object
     const customer: Customer = {
       id: `customer-${index}-${Date.now()}`,
       name: customerName,
       region: normalizedRegion,
       endUserSegment: normalizedSegment,
-      type: normalizedSegment === 'Hospital' ? 'hospital' 
-            : normalizedSegment === 'Speciality Center' ? 'speciality' 
-            : normalizedSegment === 'Research Institute' ? 'research'
-            : 'pharmacy'
+      type: normalizedSegment === 'Residential' ? 'residential'
+            : normalizedSegment === 'Commercial and Industrial' ? 'commercial'
+            : 'utility'
     }
-    
+
     // Group by region and segment
     const key = `${normalizedRegion}|||${normalizedSegment}`
     if (!customerMap.has(key)) {
@@ -441,7 +413,7 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
     }
     customerMap.get(key)!.push(customer)
   })
-  
+
   // Convert map to CustomerIntelligenceData array
   const result: CustomerIntelligenceData[] = []
   customerMap.forEach((customers, key) => {
@@ -453,14 +425,14 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
       customers
     })
   })
-  
+
   console.log(`Parser - Summary:`)
   console.log(`  Total rows: ${rows.length}`)
   console.log(`  Processed: ${processedCount}`)
   console.log(`  Skipped: ${skippedCount}`)
   console.log(`  Unique region/segment combinations: ${result.length}`)
   console.log(`  Total customers: ${result.reduce((sum, cell) => sum + cell.customerCount, 0)}`)
-  
+
   // Log the breakdown by region and segment
   if (result.length > 0) {
     console.log('Parser - Breakdown by region/segment:')
@@ -468,11 +440,11 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
       console.log(`  ${cell.region} / ${cell.endUserSegment}: ${cell.customerCount} customers`)
     })
   }
-  
+
   if (result.length === 0 && rows.length > 0) {
     console.warn('Parser - No customers extracted. Sample row:', rows[0])
   }
-  
+
   return result
 }
 
@@ -495,32 +467,32 @@ export async function loadCustomerIntelligenceData(filePath?: string): Promise<C
 
   try {
     // Try to load from API endpoint
-    const url = filePath 
+    const url = filePath
       ? `/api/load-customer-intelligence?filePath=${encodeURIComponent(filePath)}`
       : '/api/load-customer-intelligence'
-    
+
     const controller = new AbortController()
     const timeoutId = setTimeout(() => {
       if (!controller.signal.aborted) {
         controller.abort()
       }
     }, 30000) // 30 second timeout
-    
+
     try {
       const response = await fetch(url, {
         cache: 'no-store',
         signal: controller.signal
       })
-      
+
       clearTimeout(timeoutId)
-    
+
       if (!response.ok) {
         // If file not found, fall back to generated data
         if (response.status === 404) {
           console.log('Customer intelligence Excel file not found, using generated data')
           return generateCustomerIntelligenceData()
         }
-        
+
         // Try to get error details from response
         let errorMessage = response.statusText
         try {
@@ -530,13 +502,13 @@ export async function loadCustomerIntelligenceData(filePath?: string): Promise<C
         } catch {
           // If JSON parsing fails, use status text
         }
-        
+
         console.warn(`Failed to load customer intelligence: ${errorMessage}, using generated data`)
         return generateCustomerIntelligenceData()
       }
-      
+
       const data = await response.json()
-      
+
       console.log('API Response received:', {
         hasData: !!data.data,
         dataType: Array.isArray(data.data) ? 'array' : typeof data.data,
@@ -545,27 +517,27 @@ export async function loadCustomerIntelligenceData(filePath?: string): Promise<C
         error: data.error,
         message: data.message
       })
-      
+
       // Transform the API response to match CustomerIntelligenceData structure
       if (data.data && Array.isArray(data.data) && data.data.length > 0) {
         console.log(`Successfully loaded ${data.data.length} customer intelligence cells`)
         cachedData = data.data as CustomerIntelligenceData[]
         return cachedData
       }
-      
+
       // If data structure is unexpected, fall back to generated data
       console.warn('Unexpected data structure from API:', data)
       console.warn('Falling back to generated data')
       return generateCustomerIntelligenceData()
     } catch (fetchError) {
       clearTimeout(timeoutId)
-      
+
       // Handle abort errors gracefully
       if (fetchError instanceof Error && fetchError.name === 'AbortError') {
         console.log('Customer intelligence data fetch was aborted')
         return generateCustomerIntelligenceData()
       }
-      
+
       throw fetchError
     }
   } catch (error) {
@@ -574,4 +546,3 @@ export async function loadCustomerIntelligenceData(filePath?: string): Promise<C
     return generateCustomerIntelligenceData()
   }
 }
-

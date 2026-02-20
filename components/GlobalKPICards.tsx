@@ -100,25 +100,29 @@ export function GlobalKPICards() {
       return null
     }
 
-    // Calculate total market size for 2025 and 2033
-    let marketSize2025 = 0
-    let marketSize2033 = 0
+    // Use actual years from data metadata
+    const startYear = data.metadata.base_year || data.metadata.start_year
+    const endYear = data.metadata.forecast_year
+
+    // Calculate total market size for start and end years
+    let marketSizeStart = 0
+    let marketSizeEnd = 0
 
     globalRecords.forEach(record => {
-      marketSize2025 += record.time_series[2025] || 0
-      marketSize2033 += record.time_series[2033] || 0
+      marketSizeStart += record.time_series[startYear] || 0
+      marketSizeEnd += record.time_series[endYear] || 0
     })
 
-    // Calculate CAGR from 2025 to 2033
-    const years = 2033 - 2025
-    const cagr = marketSize2025 > 0
-      ? (Math.pow(marketSize2033 / marketSize2025, 1 / years) - 1) * 100
+    // Calculate CAGR from start to end year
+    const years = endYear - startYear
+    const cagr = marketSizeStart > 0 && years > 0
+      ? (Math.pow(marketSizeEnd / marketSizeStart, 1 / years) - 1) * 100
       : 0
 
     // Calculate absolute growth
-    const absoluteGrowth = marketSize2033 - marketSize2025
-    const growthPercentage = marketSize2025 > 0
-      ? ((marketSize2033 - marketSize2025) / marketSize2025) * 100
+    const absoluteGrowth = marketSizeEnd - marketSizeStart
+    const growthPercentage = marketSizeStart > 0
+      ? ((marketSizeEnd - marketSizeStart) / marketSizeStart) * 100
       : 0
 
     // Get currency preference
@@ -133,8 +137,8 @@ export function GlobalKPICards() {
       : (data.metadata.volume_unit || 'Units')
 
     // Display values as-is (they're already in the correct unit)
-    const marketSize2025Display = marketSize2025
-    const marketSize2033Display = marketSize2033
+    const marketSizeStartDisplay = marketSizeStart
+    const marketSizeEndDisplay = marketSizeEnd
     const absoluteGrowthDisplay = absoluteGrowth
 
     // Build descriptive labels
@@ -153,8 +157,10 @@ export function GlobalKPICards() {
     const segmentTypeLabel = targetSegmentType || 'All Segments'
 
     return {
-      marketSize2025: marketSize2025Display,
-      marketSize2033: marketSize2033Display,
+      marketSizeStart: marketSizeStartDisplay,
+      marketSizeEnd: marketSizeEndDisplay,
+      startYear,
+      endYear,
       cagr,
       absoluteGrowth: absoluteGrowthDisplay,
       growthPercentage,
@@ -189,7 +195,7 @@ export function GlobalKPICards() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {/* Market Size 2025 */}
+          {/* Market Size - Start Year */}
           <div className="flex items-center gap-2">
             <div className="p-1.5 bg-blue-100 rounded">
               {kpiData.currency === 'INR' ? (
@@ -200,33 +206,33 @@ export function GlobalKPICards() {
             </div>
             <div>
               <p className="text-[10px] text-black uppercase tracking-wider font-semibold">
-                {kpiData.dataTypeLabel} 2025
+                {kpiData.dataTypeLabel} {kpiData.startYear}
               </p>
               <p className="text-base font-bold text-black leading-tight">
                 {kpiData.dataType === 'value' && kpiData.isINR
-                  ? `₹ ${formatIndianNumber(kpiData.marketSize2025)}`
+                  ? `₹ ${formatIndianNumber(kpiData.marketSizeStart)}`
                   : kpiData.dataType === 'value'
-                  ? `$ ${kpiData.marketSize2025.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
-                  : `${kpiData.marketSize2025.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`}
+                  ? `$ ${kpiData.marketSizeStart.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
+                  : `${kpiData.marketSizeStart.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`}
               </p>
             </div>
           </div>
 
-          {/* Market Size 2033 */}
+          {/* Market Size - End Year */}
           <div className="flex items-center gap-2">
             <div className="p-1.5 bg-green-100 rounded">
               <Calendar className="h-4 w-4 text-green-600" />
             </div>
             <div>
               <p className="text-[10px] text-black uppercase tracking-wider font-semibold">
-                {kpiData.dataTypeLabel} 2033
+                {kpiData.dataTypeLabel} {kpiData.endYear}
               </p>
               <p className="text-base font-bold text-black leading-tight">
                 {kpiData.dataType === 'value' && kpiData.isINR
-                  ? `₹ ${formatIndianNumber(kpiData.marketSize2033)}`
+                  ? `₹ ${formatIndianNumber(kpiData.marketSizeEnd)}`
                   : kpiData.dataType === 'value'
-                  ? `$ ${kpiData.marketSize2033.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
-                  : `${kpiData.marketSize2033.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`}
+                  ? `$ ${kpiData.marketSizeEnd.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
+                  : `${kpiData.marketSizeEnd.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`}
               </p>
             </div>
           </div>
@@ -238,7 +244,7 @@ export function GlobalKPICards() {
             </div>
             <div>
               <p className="text-[10px] text-black uppercase tracking-wider font-semibold">
-                CAGR (2026-2033)
+                CAGR ({kpiData.startYear}-{kpiData.endYear})
               </p>
               <p className="text-base font-bold text-black leading-tight">
                 {kpiData.cagr.toFixed(2)}%
@@ -253,7 +259,7 @@ export function GlobalKPICards() {
             </div>
             <div>
               <p className="text-[10px] text-black uppercase tracking-wider font-semibold">
-                Absolute Growth (2026-2033)
+                Absolute Growth ({kpiData.startYear}-{kpiData.endYear})
               </p>
               <p className="text-base font-bold text-black leading-tight">
                 {kpiData.dataType === 'value' && kpiData.isINR
