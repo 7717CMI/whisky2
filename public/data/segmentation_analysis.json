@@ -1,42 +1,28 @@
 {
   "Global": {
-    "By Product Category": {
-      "Originator Molecule": {
-        "Lantus": {},
-        "Toujeo": {}
-      },
-      "Biosimilar": {
-        "Basaglar/Abasaglar": {},
-        "Basalin": {},
-        "Glaritus": {},
-        "Besugine": {},
-        "Other Pipeline Molecules (Ondibta, among others)": {}
-      },
-      "Combination": {
-        "Soliqua": {}
-      },
-      "Interchangeable": {
-        "Semglee": {},
-        "Rezvoglar": {}
-      }
+    "By Type": {
+      "Sub-Normothermic Perfusion (20–34°C)": {},
+      "Warm or Normothermic Perfusion (35–37°C)": {}
     },
-    "By Form": {
-      "Vials": {},
-      "Cartridge": {},
-      "Prefilled Pen": {}
+    "By Organ Type": {
+      "Liver": {},
+      "Heart": {},
+      "Lung": {},
+      "Kidney": {},
+      "Others (Pancreas, Small bowel / Intestine, Composite Tissues / Limb Perfusion (emerging use cases))": {}
     },
-    "By Concentration": {
-      "100 IU": {},
-      "300 IU": {}
+    "Application / Use Case": {
+      "Organ Preservation": {},
+      "Viability Assessment": {},
+      "Physiologic Transport": {},
+      "Reconditioning Marginal Organs": {},
+      "Others (Research Use / Protocol development)": {}
     },
-    "By Application": {
-      "Type 1 Diabetes": {},
-      "Type 2 Diabetes": {}
-    },
-    "By Distribution Channel": {
-      "Hospital Pharmacies": {},
-      "Retail Pharmacies": {},
-      "Online Pharmacies": {}
+    "By End User": {
+      "Hospitals & Clinics": {},
+      "Specialty Clinic/Centers": {},
+      "Transplant Centers": {},
+      "Others (Research Institutes/Centers, Organ Procurement Organizations, etc.)": {}
     },
     "By Region": {
       "North America": {
