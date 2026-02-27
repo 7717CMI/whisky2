@@ -5,6 +5,7 @@ import * as d3 from 'd3'
 import { useDashboardStore } from '@/lib/store'
 import { getChartColor } from '@/lib/chart-theme'
 import { filterData } from '@/lib/data-processor'
+import { formatValueTruncated } from '@/lib/utils'
 import { GeographyMultiSelect } from '@/components/filters/GeographyMultiSelect'
 import { AggregationLevelSelector } from '@/components/filters/AggregationLevelSelector'
 import { CascadeFilter } from '@/components/filters/CascadeFilter'
@@ -1792,10 +1793,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
                   <span className="text-sm text-black">Market Size (2033):</span>
                   <div className="text-right">
                     <span className="text-sm font-semibold text-black">
-                      {tooltipData.currentValue.toLocaleString(undefined, { 
-                        minimumFractionDigits: 2, 
-                        maximumFractionDigits: 2 
-                      })}
+                      {formatValueTruncated(tooltipData.currentValue)}
                     </span>
                     <span className="text-xs text-black ml-1">{unit}</span>
                   </div>
@@ -1820,10 +1818,7 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
                     tooltipData.absoluteGrowth > 0 ? 'text-green-600' : tooltipData.absoluteGrowth < 0 ? 'text-red-600' : 'text-black'
                   }`}>
                     {tooltipData.absoluteGrowth > 0 ? '+' : ''}
-                    {tooltipData.absoluteGrowth.toLocaleString(undefined, { 
-                      minimumFractionDigits: 2, 
-                      maximumFractionDigits: 2 
-                    })} {unit}
+                    {formatValueTruncated(tooltipData.absoluteGrowth)} {unit}
                   </span>
                 </div>
               </div>

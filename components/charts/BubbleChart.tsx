@@ -13,6 +13,7 @@ import {
   Cell
 } from 'recharts'
 import { CHART_THEME, getChartColor } from '@/lib/chart-theme'
+import { formatValueTruncated } from '@/lib/utils'
 import { filterData } from '@/lib/data-processor'
 import { useDashboardStore } from '@/lib/store'
 import type { DataRecord } from '@/lib/types'
@@ -208,10 +209,7 @@ export function BubbleChart({ title, height = 500 }: BubbleChartProps) {
                 <span className="text-sm text-black">Market Size (X):</span>
                 <div className="text-right">
                   <span className="text-sm font-semibold text-black">
-                    {(point.x || 0).toLocaleString(undefined, { 
-                      minimumFractionDigits: 2, 
-                      maximumFractionDigits: 2 
-                    })}
+                    {formatValueTruncated(point.x || 0)}
                   </span>
                   <span className="text-xs text-black ml-1">{unit}</span>
                 </div>
@@ -236,10 +234,7 @@ export function BubbleChart({ title, height = 500 }: BubbleChartProps) {
                   (point.absoluteGrowth || 0) > 0 ? 'text-green-600' : (point.absoluteGrowth || 0) < 0 ? 'text-red-600' : 'text-black'
                 }`}>
                   {(point.absoluteGrowth || 0) > 0 ? '+' : ''}
-                  {((point.absoluteGrowth || 0)).toLocaleString(undefined, { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
-                  })} {unit}
+                  {formatValueTruncated(point.absoluteGrowth || 0)} {unit}
                 </span>
               </div>
             </div>

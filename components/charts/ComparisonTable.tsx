@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { useDashboardStore } from '@/lib/store'
 import { filterData } from '@/lib/data-processor'
 import { ArrowUp, ArrowDown, Download } from 'lucide-react'
+import { truncateToDecimals } from '@/lib/utils'
 
 interface ComparisonTableProps {
   title?: string
@@ -102,7 +103,7 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
       row.geography,
       row.segment,
       row.segmentType,
-      row.currentValue.toFixed(2),
+      truncateToDecimals(row.currentValue),
       row.growth.toFixed(2),
       typeof row.cagr === 'number' ? row.cagr.toFixed(2) : '0.00',
       row.marketShare.toFixed(2)
@@ -268,7 +269,7 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
                   {row.segmentType}
                 </td>
                 <td className="px-4 py-3 text-sm text-right font-medium text-black">
-                  {row.currentValue.toFixed(2)}
+                  {truncateToDecimals(row.currentValue)}
                 </td>
                 <td className="px-4 py-3 w-24">
                   {renderSparkline(row.sparkline)}

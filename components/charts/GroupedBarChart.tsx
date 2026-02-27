@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { formatValueTruncated } from '@/lib/utils'
 import {
   BarChart,
   Bar,
@@ -401,10 +402,7 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
                   <span className="text-sm text-black">{item.name}</span>
                 </div>
                 <span className="text-sm font-medium text-black">
-                  {item.value.toLocaleString(undefined, { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
-                  })} {unit}
+                  {formatValueTruncated(item.value)} {unit}
                 </span>
               </div>
             ))}
@@ -412,10 +410,7 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
               <div className="flex items-center justify-between gap-4 mt-2 pt-2 border-t border-gray-100">
                 <span className="text-sm font-semibold text-black ml-4">Total</span>
                 <span className="text-sm font-bold text-black">
-                  {total.toLocaleString(undefined, { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
-                  })} {unit}
+                  {formatValueTruncated(total)} {unit}
                 </span>
               </div>
             )}
@@ -450,10 +445,7 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
               </div>
               <div className="text-right">
                 <span className="text-sm font-semibold text-black">
-                  {entry.value.toLocaleString(undefined, { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
-                  })}
+                  {formatValueTruncated(entry.value)}
                 </span>
                 <span className="text-xs text-black ml-1">
                   {unit}

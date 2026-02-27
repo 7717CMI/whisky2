@@ -13,6 +13,7 @@ import {
   Cell
 } from 'recharts'
 import { CHART_THEME, getChartColor } from '@/lib/chart-theme'
+import { formatValueTruncated } from '@/lib/utils'
 import { filterData, prepareWaterfallData } from '@/lib/data-processor'
 import { useDashboardStore } from '@/lib/store'
 
@@ -151,10 +152,7 @@ export function WaterfallChart({ title, height = 400 }: WaterfallChartProps) {
                 <span className="text-sm text-black">Total Value:</span>
                 <div className="text-right">
                   <span className="text-sm font-semibold text-black">
-                    {pointData.value.toLocaleString(undefined, { 
-                      minimumFractionDigits: 2, 
-                      maximumFractionDigits: 2 
-                    })}
+                    {formatValueTruncated(pointData.value)}
                   </span>
                   <span className="text-xs text-black ml-1">{unit}</span>
                 </div>
@@ -167,10 +165,7 @@ export function WaterfallChart({ title, height = 400 }: WaterfallChartProps) {
                       chartData.totalChange > 0 ? 'text-green-600' : 'text-red-600'
                     }`}>
                       {chartData.totalChange > 0 ? '+' : ''}
-                      {chartData.totalChange.toLocaleString(undefined, { 
-                        minimumFractionDigits: 2, 
-                        maximumFractionDigits: 2 
-                      })} {unit}
+                      {formatValueTruncated(chartData.totalChange)} {unit}
                     </span>
                   </div>
                 </div>
@@ -193,10 +188,7 @@ export function WaterfallChart({ title, height = 400 }: WaterfallChartProps) {
                     pointData.type === 'positive' ? 'text-green-600' : 'text-red-600'
                   }`}>
                     {pointData.type === 'positive' ? '+' : '-'}
-                    {pointData.value.toLocaleString(undefined, { 
-                      minimumFractionDigits: 2, 
-                      maximumFractionDigits: 2 
-                    })}
+                    {formatValueTruncated(pointData.value)}
                   </span>
                   <span className="text-xs text-black ml-1">{unit}</span>
                 </div>
@@ -205,19 +197,13 @@ export function WaterfallChart({ title, height = 400 }: WaterfallChartProps) {
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-black">From:</span>
                   <span className="text-black font-medium">
-                    {pointData.start?.toLocaleString(undefined, { 
-                      minimumFractionDigits: 2, 
-                      maximumFractionDigits: 2 
-                    })} {unit}
+                    {formatValueTruncated(pointData.start ?? 0)} {unit}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-black">To:</span>
                   <span className="text-black font-medium">
-                    {pointData.end?.toLocaleString(undefined, { 
-                      minimumFractionDigits: 2, 
-                      maximumFractionDigits: 2 
-                    })} {unit}
+                    {formatValueTruncated(pointData.end ?? 0)} {unit}
                   </span>
                 </div>
               </div>
@@ -331,7 +317,7 @@ export function WaterfallChart({ title, height = 400 }: WaterfallChartProps) {
               chartData.totalChange > 0 ? 'text-green-600' : 'text-red-600'
             }`}>
               Net Change: {chartData.totalChange > 0 ? '+' : ''}
-              {chartData.totalChange.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+              {formatValueTruncated(chartData.totalChange)}
             </span>
           </div>
         )}

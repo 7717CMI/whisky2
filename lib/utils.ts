@@ -6,11 +6,34 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatNumber(value: number, decimals: number = 2): string {
-  return value.toFixed(decimals)
+  return truncateToDecimals(value, decimals)
+}
+
+/**
+ * Truncate a number to N decimal places WITHOUT rounding.
+ * e.g. truncateToDecimals(5.796, 2) => "5.79" (not "5.80")
+ */
+export function truncateToDecimals(value: number, decimals: number = 2): string {
+  const factor = Math.pow(10, decimals)
+  const truncated = Math.trunc(value * factor) / factor
+  return truncated.toFixed(decimals)
+}
+
+/**
+ * Format a number for display: truncate to 2 decimals with locale separators.
+ * Use this instead of toLocaleString with maximumFractionDigits.
+ */
+export function formatValueTruncated(value: number, decimals: number = 2): string {
+  const factor = Math.pow(10, decimals)
+  const truncated = Math.trunc(value * factor) / factor
+  return truncated.toLocaleString(undefined, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  })
 }
 
 export function formatCurrency(value: number, currency: string = 'USD', unit: string = 'Mn'): string {
-  return `${currency} ${value.toFixed(2)} ${unit}`
+  return `${currency} ${truncateToDecimals(value, 2)} ${unit}`
 }
 
 // Get currency symbol based on currency preference

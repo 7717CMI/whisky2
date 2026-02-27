@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { useDashboardStore } from '@/lib/store'
 import { filterData } from '@/lib/data-processor'
+import { formatValueTruncated, truncateToDecimals } from '@/lib/utils'
 
 interface MatrixHeatmapProps {
   title?: string
@@ -158,8 +159,8 @@ export function MatrixHeatmap({ title, height = 600 }: MatrixHeatmapProps) {
 
   const formatValue = (value: number) => {
     if (value === 0) return '-'
-    if (value >= 1000) return `${(value / 1000).toFixed(1)}K`
-    return value.toFixed(1)
+    if (value >= 1000) return `${truncateToDecimals(value / 1000, 1)}K`
+    return truncateToDecimals(value, 1)
   }
 
   const [startYear, endYear] = filters.yearRange
@@ -263,10 +264,7 @@ export function MatrixHeatmap({ title, height = 600 }: MatrixHeatmapProps) {
               <span className="text-sm text-black">Value:</span>
               <div className="text-right">
                 <span className="text-sm font-semibold text-black">
-                  {hoveredCell.value.toLocaleString(undefined, { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
-                  })}
+                  {formatValueTruncated(hoveredCell.value)}
                 </span>
                 <span className="text-xs text-black ml-1">{valueUnit}</span>
               </div>

@@ -12,6 +12,7 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import { CHART_THEME, getChartColor } from '@/lib/chart-theme'
+import { formatValueTruncated } from '@/lib/utils'
 import { filterData, prepareLineChartData, prepareIntelligentMultiLevelData, getUniqueGeographies, getUniqueSegments, getGeographyProportions } from '@/lib/data-processor'
 import { useDashboardStore } from '@/lib/store'
 
@@ -233,10 +234,7 @@ export function MultiLineChart({ title, height = 400 }: MultiLineChartProps) {
                             </div>
                             <div className="text-right">
                               <span className="text-sm font-semibold text-black">
-                                {value.toLocaleString(undefined, { 
-                                  minimumFractionDigits: 2, 
-                                  maximumFractionDigits: 2 
-                                })}
+                                {formatValueTruncated(value)}
                               </span>
                               <span className="text-xs text-black ml-1">
                                 {unit}
