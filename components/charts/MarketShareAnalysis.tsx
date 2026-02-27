@@ -32,7 +32,10 @@ export function MarketShareAnalysis({ year: propYear = 2023 }: MarketShareAnalys
       }
       return years
     }
-    return [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029]
+    // Generate fallback range from 2000-2033
+    const fallbackYears: number[] = []
+    for (let y = 2000; y <= 2033; y++) fallbackYears.push(y)
+    return fallbackYears
   }, [data])
 
   // Filter data based on selected filters

@@ -1152,9 +1152,9 @@ async function processSegmentTypeAsync(
           cagr = data.CAGR
         }
       } else {
-        // Calculate CAGR from base year (2023) to forecast year
-        const cagrStartYear = allYears[0] + 4 // Base year = 2023 for 2019-2031 data
-        const cagrEndYear = allYears[allYears.length - 1]
+        // Calculate CAGR from 2026 to 2033 (forecast period)
+        const cagrStartYear = 2026
+        const cagrEndYear = 2033
         const startVal = timeSeries[cagrStartYear] || 0
         const endVal = timeSeries[cagrEndYear] || 0
         const numYears = cagrEndYear - cagrStartYear
@@ -1233,9 +1233,9 @@ export async function processJsonDataAsync(
     }
     const startYear = Math.min(...allYears)
     const forecastYear = Math.max(...allYears)
-    const baseYear = startYear + 5 // Base year = 2026 for 2021-2033 data
-    // Historical/Forecast split: years before base year are historical
-    const historicalEndYear = baseYear - 1 // 2025
+    const baseYear = 2025 // Base year is always 2025
+    // Historical/Forecast split: years up to base year are historical, after are forecast
+    const historicalEndYear = baseYear // 2025
     console.log(`Years: ${startYear} to ${forecastYear}, base: ${baseYear}, historical end: ${historicalEndYear}`)
     
     // Extract geographies from segmentation data (first level keys)
@@ -1472,18 +1472,18 @@ export async function processJsonDataAsync(
     
     // Build metadata
     const metadata: Metadata = {
-      market_name: 'Normothermic Machine Perfusion Market',
+      market_name: 'Global Scottish Whisky Cask Market',
       market_type: 'Market Analysis',
-      industry: 'Healthcare & Pharmaceuticals',
+      industry: 'Alternative Investments & Luxury Assets',
       years: allYears,
       start_year: startYear,
       base_year: baseYear,
       forecast_year: forecastYear,
       historical_years: allYears.filter(y => y <= historicalEndYear),
       forecast_years: allYears.filter(y => y > historicalEndYear),
-      currency: 'USD',
+      currency: 'GBP',
       value_unit: 'Million',
-      volume_unit: 'Million Units',
+      volume_unit: 'Th Units',
       has_value: valueRecords.length > 0,
       has_volume: volumeRecords.length > 0,
     }

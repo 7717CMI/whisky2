@@ -21,9 +21,9 @@ export function createMockData(): ComparisonData {
       forecast_year: forecastYear,
       historical_years: [startYear, startYear + 1, startYear + 2, startYear + 3, baseYear - 1],
       forecast_years: Array.from({ length: forecastYear - baseYear + 1 }, (_, i) => baseYear + i),
-      currency: 'USD',
+      currency: 'GBP',
       value_unit: 'Million',
-      volume_unit: 'Units',
+      volume_unit: 'Th Units',
       has_value: true,
       has_volume: true
     },

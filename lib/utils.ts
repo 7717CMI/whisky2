@@ -14,14 +14,19 @@ export function formatCurrency(value: number, currency: string = 'USD', unit: st
 }
 
 // Get currency symbol based on currency preference
-export function getCurrencySymbol(currency: 'USD' | 'INR'): string {
-  return currency === 'INR' ? '₹' : '$'
+export function getCurrencySymbol(currency: 'USD' | 'INR' | 'GBP'): string {
+  if (currency === 'INR') return '₹'
+  if (currency === 'GBP') return '£'
+  return '$'
 }
 
 // Format unit based on currency preference
-export function formatUnit(unit: string, currency: 'USD' | 'INR'): string {
+export function formatUnit(unit: string, currency: 'USD' | 'INR' | 'GBP'): string {
   if (currency === 'INR') {
     return unit.replace('USD Million', '').replace('USD', '').replace('Million', '').trim()
+  }
+  if (currency === 'GBP') {
+    return unit.replace('USD Million', 'GBP Million').replace('USD', 'GBP')
   }
   return unit
 }
@@ -63,7 +68,7 @@ export function formatIndianNumberWithCommas(value: number, decimals: number = 2
 }
 
 // Format currency value based on currency preference
-export function formatCurrencyValue(value: number, currency: 'USD' | 'INR', showUnit: boolean = true): string {
+export function formatCurrencyValue(value: number, currency: 'USD' | 'INR' | 'GBP', showUnit: boolean = true): string {
   if (currency === 'INR') {
     const symbol = '₹'
     // For INR, use Indian number system without "Million"
@@ -75,8 +80,8 @@ export function formatCurrencyValue(value: number, currency: 'USD' | 'INR', show
       return `${symbol} ${formatIndianNumberWithCommas(value)}`
     }
   } else {
-    // USD: use standard formatting with Million
-    const symbol = '$'
+    // USD/GBP: use standard formatting with Million
+    const symbol = getCurrencySymbol(currency)
     if (value >= 1000000) {
       return `${symbol} ${(value / 1000000).toFixed(2)} Million`
     }

@@ -1,28 +1,38 @@
 {
   "Global": {
-    "By Type": {
-      "Sub-Normothermic Perfusion (20–34°C)": {},
-      "Warm or Normothermic Perfusion (35–37°C)": {}
+    "By Underlying Whisky Type": {
+      "Single Malt": {},
+      "Single Grain": {},
+      "Blended Malt": {},
+      "Blended Scotch": {}
     },
-    "By Organ Type": {
-      "Liver": {},
-      "Heart": {},
-      "Lung": {},
-      "Kidney": {},
-      "Others (Pancreas, Small bowel / Intestine, Composite Tissues / Limb Perfusion (emerging use cases))": {}
+    "By Distillery Status": {
+      "Operating Distillery Casks": {},
+      "Silent / Closed Distillery Casks": {}
     },
-    "Application / Use Case": {
-      "Organ Preservation": {},
-      "Viability Assessment": {},
-      "Physiologic Transport": {},
-      "Reconditioning Marginal Organs": {},
-      "Others (Research Use / Protocol development)": {}
+    "By Cask Size & Format": {
+      "Barrel (≈180–200L)": {},
+      "Hogshead (≈225–250L)": {},
+      "Butt (≈480–520L)": {},
+      "Puncheon (≈450–550L)": {},
+      "Small-Format / Octave Casks": {}
     },
-    "By End User": {
-      "Hospitals & Clinics": {},
-      "Specialty Clinic/Centers": {},
-      "Transplant Centers": {},
-      "Others (Research Institutes/Centers, Organ Procurement Organizations, etc.)": {}
+    "By Maturation Stage": {
+      "Early Stage (0–5 Years)": {},
+      "Mid-Maturity (6–12 Years)": {},
+      "Late-Maturity (13–20 Years)": {},
+      "Fully Mature / Legacy (21+ Years)": {}
+    },
+    "By Ownership & Capital Structure": {
+      "Private Cask Ownership": {},
+      "Portfolio / Pooled Ownership": {},
+      "Institutional / Fund-Held Casks": {}
+    },
+    "By Buyer Type": {
+      "Independent Bottlers": {},
+      "Brand Owners / Distilleries": {},
+      "UHNW Private Collectors": {},
+      "Institutional Buyers": {}
     },
     "By Region": {
       "North America": {
@@ -49,14 +59,19 @@
       },
       "Latin America": {
         "Brazil": {},
-        "Argentina": {},
         "Mexico": {},
+        "Argentina": {},
         "Rest of Latin America": {}
       },
-      "Middle East & Africa": {
-        "GCC": {},
-        "South Africa": {},
-        "Rest of Middle East & Africa": {}
+      "Middle East": {
+        "GCC Countries": {},
+        "Israel": {},
+        "Rest of Middle East": {}
+      },
+      "Africa": {
+        "North Africa": {},
+        "Central Africa": {},
+        "South Africa": {}
       }
     }
   }

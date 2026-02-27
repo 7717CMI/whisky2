@@ -22,7 +22,7 @@ export interface Insight {
 export function generateInsights(
   records: DataRecord[],
   filters: FilterState,
-  currency: 'USD' | 'INR' = 'USD',
+  currency: 'USD' | 'INR' | 'GBP' = 'USD',
   volumeUnit: string = 'Million Units'
 ): Insight[] {
   const insights: Insight[] = []
@@ -59,7 +59,7 @@ export function generateInsights(
 /**
  * Find the top performing geography or segment
  */
-function findTopPerformer(records: DataRecord[], filters: FilterState, currency: 'USD' | 'INR' = 'USD', volumeUnit: string = 'Million Units'): Insight | null {
+function findTopPerformer(records: DataRecord[], filters: FilterState, currency: 'USD' | 'INR' | 'GBP' = 'USD', volumeUnit: string = 'Million Units'): Insight | null {
   const [startYear, endYear] = filters.yearRange
   const currentYear = endYear
   
@@ -91,8 +91,10 @@ function findTopPerformer(records: DataRecord[], filters: FilterState, currency:
   if (filters.dataType === 'value') {
     if (currency === 'INR') {
       valueDisplay = `₹${topValue.toLocaleString('en-IN', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} Mn`
+    } else if (currency === 'GBP') {
+      valueDisplay = `£${topValue.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} Mn`
     } else {
-      valueDisplay = `${topValue.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} USD Mn`
+      valueDisplay = `$${topValue.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} Mn`
     }
   } else {
     valueDisplay = `${topValue.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${volumeUnit}`

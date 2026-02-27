@@ -25,7 +25,7 @@ interface DashboardStore {
   proposition3Data: { headers: string[]; rows: Record<string, any>[] } | null // Store Proposition 3 data
   competitiveIntelligenceData: { headers: string[]; rows: Record<string, any>[] } | null // Store competitive intelligence CSV data
   dashboardName: string | null // Custom dashboard name
-  currency: 'USD' | 'INR' // Currency preference
+  currency: 'USD' | 'INR' | 'GBP' // Currency preference
   
   // Actions
   setData: (data: ComparisonData) => void
@@ -52,7 +52,7 @@ interface DashboardStore {
   setProposition3Data: (data: { headers: string[]; rows: Record<string, any>[] } | null) => void
   setCompetitiveIntelligenceData: (data: { headers: string[]; rows: Record<string, any>[] } | null) => void
   setDashboardName: (name: string | null) => void
-  setCurrency: (currency: 'USD' | 'INR') => void
+  setCurrency: (currency: 'USD' | 'INR' | 'GBP') => void
 }
 
 // Helper function to check if data has B2B/B2C segmentation
@@ -74,7 +74,7 @@ function getDefaultFilters(data: ComparisonData | null): FilterState {
     geographies: [],
     segments: [],
     segmentType: '',
-    yearRange: [2021, 2033],
+    yearRange: [2000, 2033],
     dataType: 'value',
     viewMode: 'segment-mode',
     businessType: undefined,
@@ -184,8 +184,8 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
   proposition3Data: null,
   competitiveIntelligenceData: null,
   dashboardName: null,
-  currency: 'USD',
-  
+  currency: 'GBP',
+
   setData: (data) => {
     const defaultFilters = getDefaultFilters(data)
     const defaultOpportunityFilters = getDefaultOpportunityFilters(data)
@@ -459,7 +459,7 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         ...(newFilters.geographies !== undefined && { geographies: newFilters.geographies || [] }),
         ...(newFilters.segments !== undefined && { segments: newFilters.segments || [] }),
         ...(newFilters.segmentType !== undefined && { segmentType: newFilters.segmentType || '' }),
-        ...(newFilters.yearRange !== undefined && { yearRange: newFilters.yearRange || [2021, 2033] }),
+        ...(newFilters.yearRange !== undefined && { yearRange: newFilters.yearRange || [2000, 2033] }),
         ...(newFilters.dataType !== undefined && { dataType: newFilters.dataType || 'value' }),
         ...(newFilters.viewMode !== undefined && { viewMode: newFilters.viewMode || 'segment-mode' }),
         ...(newFilters.businessType !== undefined && { businessType: newFilters.businessType }),

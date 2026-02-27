@@ -77,8 +77,8 @@ export function BubbleChart({ title, height = 500 }: BubbleChartProps) {
       totalMarketValue += record.time_series[currentYear] || 0
     })
     
-    // Calculate start year value for growth calculation
-    const startYear = filters.yearRange[0]
+    // CAGR and growth always calculated from forecast period 2026-2033
+    const startYear = 2026
     
     grouped.forEach((records, key) => {
       // Aggregate values for this group

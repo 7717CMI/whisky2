@@ -31,6 +31,10 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
     const startYear = filters.yearRange[0]
     const endYear = filters.yearRange[1]
 
+    // CAGR and Growth % always calculated from forecast period 2026-2033
+    const cagrStartYear = 2026
+    const cagrEndYear = 2033
+
     // Helper function to parse CAGR (handles string, number, or null)
     const parseCAGR = (cagr: any): number => {
       if (cagr === null || cagr === undefined) return 0
@@ -51,8 +55,8 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
       currentValue: record.time_series[year] || 0,
       startValue: record.time_series[startYear] || 0,
       endValue: record.time_series[endYear] || 0,
-      growth: record.time_series[startYear] > 0 
-        ? (((record.time_series[endYear] || 0) - (record.time_series[startYear] || 0)) / record.time_series[startYear] * 100)
+      growth: record.time_series[cagrStartYear] > 0
+        ? (((record.time_series[cagrEndYear] || 0) - (record.time_series[cagrStartYear] || 0)) / record.time_series[cagrStartYear] * 100)
         : 0,
       cagr: parseCAGR(record.cagr),
       marketShare: record.market_share || 0,

@@ -148,7 +148,7 @@ export async function loadCompetitiveIntelligenceData(): Promise<CompetitiveInte
           metadata: {
             market: 'Competitive Intelligence Market',
             year: 2024,
-            currency: 'USD',
+            currency: 'GBP',
             revenue_unit: 'Mn',
             total_companies: companies.length
           },

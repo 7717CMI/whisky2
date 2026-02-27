@@ -65,7 +65,7 @@ export function FilterPresets() {
     icon: <BarChart3 className="h-4 w-4" />,
     filters: {
       viewMode: 'matrix',
-      yearRange: [2023, 2027],
+      yearRange: [2024, 2028],
       dataType: 'value',
     }
   },
