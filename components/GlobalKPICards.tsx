@@ -146,14 +146,8 @@ export function GlobalKPICards() {
     const actualSelectedGeographies = filters.geographies.length > 0 ? filters.geographies : []
     const dataTypeLabel = filters.dataType === 'value' ? 'Market Size' : 'Market Volume'
 
-    // Get market name from metadata, fallback to "Global Market"
-    const marketName = data.metadata.market_name || 'Global Market'
-
-    const geographyLabel = actualSelectedGeographies.length === 0
-      ? `Global ${marketName}`
-      : actualSelectedGeographies.length === 1
-      ? `${actualSelectedGeographies[0]} ${marketName}`
-      : `${actualSelectedGeographies.length} Geographies ${marketName}`
+    // Static market name label
+    const geographyLabel = data.metadata.market_name || 'Global Scottish Whisky Cask Market'
     const segmentTypeLabel = targetSegmentType || 'All Segments'
 
     return {
