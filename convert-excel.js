@@ -114,15 +114,14 @@ valueEndRow++; // exclusive
 // Find end of volume section
 let volumeEndRow = rows.length;
 
-// Round functions
-const roundValue = (val) => Math.round(val * 10) / 10;
-const roundVolume = (val) => Math.round(val * 10) / 10; // Keep 1 decimal for Th Units too
+// No rounding — use exact values from Excel
+const noRound = (val) => val;
 
 console.log('\nParsing Value section...');
-const valueData = parseSection(valueHeaderRow + 1, valueEndRow, roundValue);
+const valueData = parseSection(valueHeaderRow + 1, valueEndRow, noRound);
 
 console.log('Parsing Volume section...');
-const volumeData = parseSection(volumeHeaderRow + 1, volumeEndRow, roundVolume);
+const volumeData = parseSection(volumeHeaderRow + 1, volumeEndRow, noRound);
 
 // Write output files
 const dataDir = path.join(__dirname, 'public', 'data');
