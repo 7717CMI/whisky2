@@ -3,7 +3,7 @@
 import { useMemo } from 'react'
 import { useDashboardStore } from '@/lib/store'
 import { TrendingUp, DollarSign, Calendar, Activity } from 'lucide-react'
-import { formatIndianNumber, formatIndianNumberWithCommas, formatCurrencyValue } from '@/lib/utils'
+import { formatIndianNumber, formatIndianNumberWithCommas, formatCurrencyValue, getCurrencySymbol } from '@/lib/utils'
 
 export function GlobalKPICards() {
   const { data, filters, currency } = useDashboardStore()
@@ -170,6 +170,8 @@ export function GlobalKPICards() {
 
   if (!kpiData) return null
 
+  const currencySymbol = getCurrencySymbol(kpiData.currency as 'USD' | 'INR' | 'GBP')
+
   return (
     <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-y border-gray-200">
       <div className="container mx-auto px-6 py-3">
@@ -194,6 +196,8 @@ export function GlobalKPICards() {
             <div className="p-1.5 bg-blue-100 rounded">
               {kpiData.currency === 'INR' ? (
                 <span className="text-blue-600 font-bold text-lg">₹</span>
+              ) : kpiData.currency === 'GBP' ? (
+                <span className="text-blue-600 font-bold text-lg">£</span>
               ) : (
                 <DollarSign className="h-4 w-4 text-blue-600" />
               )}
@@ -206,7 +210,7 @@ export function GlobalKPICards() {
                 {kpiData.dataType === 'value' && kpiData.isINR
                   ? `₹ ${formatIndianNumber(kpiData.marketSizeStart)}`
                   : kpiData.dataType === 'value'
-                  ? `$ ${kpiData.marketSizeStart.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
+                  ? `${currencySymbol} ${kpiData.marketSizeStart.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
                   : `${kpiData.marketSizeStart.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`}
               </p>
             </div>
@@ -225,7 +229,7 @@ export function GlobalKPICards() {
                 {kpiData.dataType === 'value' && kpiData.isINR
                   ? `₹ ${formatIndianNumber(kpiData.marketSizeEnd)}`
                   : kpiData.dataType === 'value'
-                  ? `$ ${kpiData.marketSizeEnd.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
+                  ? `${currencySymbol} ${kpiData.marketSizeEnd.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
                   : `${kpiData.marketSizeEnd.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`}
               </p>
             </div>
@@ -259,7 +263,7 @@ export function GlobalKPICards() {
                 {kpiData.dataType === 'value' && kpiData.isINR
                   ? `₹ ${formatIndianNumber(kpiData.absoluteGrowth)}`
                   : kpiData.dataType === 'value'
-                  ? `$ ${kpiData.absoluteGrowth.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
+                  ? `${currencySymbol} ${kpiData.absoluteGrowth.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`
                   : `${kpiData.absoluteGrowth.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${kpiData.unit}`}
               </p>
               <p className="text-[10px] text-gray-600 mt-0.5">
