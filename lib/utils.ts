@@ -39,7 +39,7 @@ export function formatCurrency(value: number, currency: string = 'USD', unit: st
 // Get currency symbol based on currency preference
 export function getCurrencySymbol(currency: 'USD' | 'INR' | 'GBP'): string {
   if (currency === 'INR') return '₹'
-  if (currency === 'GBP') return '£'
+  if (currency === 'GBP') return 'GBP'
   return '$'
 }
 

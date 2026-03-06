@@ -197,7 +197,7 @@ export function GlobalKPICards() {
               {kpiData.currency === 'INR' ? (
                 <span className="text-blue-600 font-bold text-lg">₹</span>
               ) : kpiData.currency === 'GBP' ? (
-                <span className="text-blue-600 font-bold text-lg">£</span>
+                <span className="text-blue-600 font-bold text-sm">GBP</span>
               ) : (
                 <DollarSign className="h-4 w-4 text-blue-600" />
               )}
